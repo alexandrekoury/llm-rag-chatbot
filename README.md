@@ -73,7 +73,7 @@ A classe DocumentProcessingClient precisa ser inicializada passando um modelo de
 
 Por outro lado, a classe QuestionAnsweringClient requer um modelo LLM e um banco de dados vetorial, ambos no formato utilizado pela biblioteca LangChain, para ser inicializada. A classe também possui dois métodos, answer_question e answer_question_with_rag. O primeiro método recebe uma pergunta e retorna uma resposta diretamente gerada pelo modelo LLM, enquanto o segundo implementa a técnica RAG para geração da resposta.
 
-(Figuras/Esquematico_QuestionAnsweringClient.png?raw=true)
+![Esquematico QuestionAnsweringClient](Figuras/Esquematico_QuestionAnsweringClient.png?raw=true)
 
 #### 2.3 Conjunto de dados de avaliação
 ##### 2.3.1 Preparação dos documentos de contexto
@@ -82,14 +82,14 @@ De modo a avaliar o desempenho do sistema de RAG construído, utilizou-se o conj
 Além das perguntas, o SQuAD contém parágrafos dos artigos da Wikipédia que foram usados para formulá-las. Estes parágrafos foram utilizados para a etapa de busca (Retrieval) do sistema RAG desenvolvido. 
 Para tanto, os parágrafos foram inicialmente subdivididos em trechos de até 1000 caracteres, uma técnica conhecida como chunking. Esta técnica tem o objetivo de padronizar o tamanho dos trechos que serão consultados, ao mesmo tempo em que reduz a quantidade de informação que cada trecho vai apresentar, o que tende a facilitar a localização de informação durante a etapa de busca. Os trechos gerados pela etapa de chunking são geralmente referenciados como chunks ou simplesmente “documentos”. 
 
-(Figuras/Num_docs_area_conhecimento.png?raw=true)
+![Numero de documentos por área de conhecimento](Figuras/Num_docs_area_conhecimento.png?raw=true)
 
 Após a realização do chunking, foram criados embeddings de cada um dos documentos, os quais foram armazenados em um banco de dados vetorial, que, por sua vez, foi salvo localmente com uso da biblioteca ChromaDB. Cada um dos três modelos de embeddings foi usado separadamente para dar origem a um banco de vetores distinto dos demais.
 
 ##### 2.3.2 Seleção das perguntas
 Do conjunto de desenvolvimento, foram selecionadas aleatoriamente 100 perguntas para serem respondidas. As perguntas abrangeram 33 das 35 áreas de conhecimento disponíveis
 
-(Figuras/Num_perg_area_conhecimento.png?raw=true)
+![Número de perguntas por área de conhecimento](Figuras/Num_perg_area_conhecimento.png?raw=true)
 
 #### 2.4 Obtenção das respostas
 Para a configuração que não utilizou RAG, aplicaram-se os passos descritos a seguir:
@@ -109,7 +109,7 @@ Para cada uma das configurações que utilizaram RAG, aplicaram-se os passos des
 #### 3.1 Número de respostas corretas
 Uma vez classificadas as respostas, foi possível fazer uma comparação direta do desempenho de cada uma das configurações. Inicialmente compararam-se os números de respostas corretas geradas, conforme mostra a Figura XX. Os resultados evidenciam que o emprego de RAG melhorou a capacidade do sistema de responder corretamente às perguntas em todos os casos, o que é um indicativo da efetividade desta técnica. A configuração mais efetiva foi a que utiliza RAG com o modelo de embeddings Gecko.
 
-(Figuras/Num_respostas_corretas.png?raw=true)
+![Número de respostas corretas por configuração](Figuras/Num_respostas_corretas.png?raw=true)
 
 A configuração sem RAG respondeu adequadamente a 46 perguntas do total de 100. Estas respostas foram dadas apenas com o conhecimento adquirido pela rede neural durante o treinamento do modelo. Como o conjunto de perguntas e respostas utilizado (SQuAD) se baseia em dados disponíveis abertamente na internet (Wikipédia), era esperado que o LLM conseguisse dar respostas corretas, visto que os mesmos dados foram utilizados em seu treinamento. Em um cenário no qual as perguntas feitas dissessem respeito a dados que o modelo não conheceu durante seu treinamento (como, por exemplo, dados sigilosos de uma empresa), seria esperado que a configuração sem RAG apresentasse um número de respostas certas mais perto de zero.
 
@@ -124,7 +124,7 @@ A configuração sem RAG e a configuração com o modelo Gecko apresentaram o me
 
 O fato de duas das três configurações que usaram RAG terem causado uma piora no número de respostas sem sentido pode estar relacionado à quantidade de texto introduzida na janela de contexto do LLM. Respostas sem sentido são tipicamente ocasionadas por limitações do modelo de linguagem em si, comumente associadas a um número de parâmetros limitado. Neste trabalho, utilizou-se um modelo com 1 bilhão de parâmetros, considerado um número razoavelmente pequeno. Como foram utilizados 10 documentos de contexto para cada pergunta, é possível que o modelo tenha sido direcionado a alucinações devido ao excesso de informação que precisou processar para cada pergunta. Isso demonstra a necessidade de fazer ajustes no módulo de busca e na quantidade de documentos que serão recuperados e passados ao LLM como contexto, de modo a não o sobrecarregar na etapa de geração da resposta.
 
-(Figuras/Num_respostas_sem_sentido.png?raw=true)
+![Número de respostas sem sentido por configuração](Figuras/Num_respostas_sem_sentido.png?raw=true)
 
 #### 3.3 Avaliação do retrieval
 
@@ -134,7 +134,7 @@ As configurações apresentaram um desempenho semelhante, com o modelo Gecko ten
 
 Os números dos testes de busca mostram que houve diversos casos, para todas as três configurações, em que o sistema encontrou o documento correto e mesmo assim a resposta gerada não foi adequada. Tal fenômeno indica que a capacidade de responder corretamente não está associada somente ao fato de ter o documento correto dentro da janela de contexto do LLM. É preciso também considerar a possibilidade de que a presença de outros documentos tenha influência negativa na geração de resposta por parte do LLM. Para o caso deste trabalho, é possível que os documentos recuperados pela configuração com o modelo Gecko tenham sido mais coerentes entre si na maior parte das vezes, tendo menor impacto negativo no desempenho do LLM.
 
-(Figuras/Num_docs_encontrados.png?raw=true)
+![Número de documentos encontrados para cada resposta](Figuras/Num_docs_encontrados.png?raw=true)
 
 ### 4. Conclusões
 
