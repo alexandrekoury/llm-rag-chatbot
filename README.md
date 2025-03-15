@@ -1,5 +1,5 @@
-<!-- antes de enviar a versão final, solicitamos que todos os comentários, colocados para orientação ao aluno, sejam removidos do arquivo -->
-# Desenvolvimento de chatbot baseado em LLM utilizando framework RAG
+
+# Avaliação de desempenho de um sistema RAG para responder perguntas
 
 #### Aluno: [Alexandre Marques Koury Monteiro](https://github.com/alexandrekoury)
 #### Orientador: [Leonardo Alfredo Forero Mendonza](https://github.com/link_do_github).
@@ -8,8 +8,8 @@
 
 Trabalho apresentado ao curso [BI MASTER](https://ica.puc-rio.ai/bi-master) como pré-requisito para conclusão de curso e obtenção de crédito na disciplina "Projetos de Sistemas Inteligentes de Apoio à Decisão".
 
-<!-- para os links a seguir, caso os arquivos estejam no mesmo repositório que este README, não há necessidade de incluir o link completo: basta incluir o nome do arquivo, com extensão, que o GitHub completa o link corretamente -->
-- [Link para o código](source/rag_pipeline.py). <!-- caso não aplicável, remover esta linha -->
+
+- [Link para o código](./source/).
 
 
 ---
